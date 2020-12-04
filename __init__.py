@@ -210,17 +210,21 @@ class Analyzer(object):
 
 
 def slicer(model_file, definition_files, verbose=False):
-	cmd = ["CuraEngine", "slice", "-l",  model_file]
+	cmd = ["CuraEngine", "slice"]
 
 	for definition in definition_files:
 		cmd.append("-j")
 		cmd.append(definition)
+
+	cmd.append("-l")
+	cmd.append(model_file)
 
 	stderr_out = subprocess.DEVNULL
 	
 	if verbose:
 		stderr_out=None
 		cmd.append("-v")
+		print(" ".join(cmd))
 	
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=stderr_out)
 	output = process.communicate()[0]
