@@ -209,10 +209,12 @@ class Analyzer(object):
 				self.__pos["Z"] = 0.0
 
 
-def slicer(model_file, config="prusa_i3"):
-	def_dir = os.sep.join(__file__.split(os.sep)[:-1]) + os.sep + "definitions" + os.sep
+def slicer(model_file, definition_files):
+	cmd = ["CuraEngine", "slice", "-l",  model_file]
 
-	cmd = ["CuraEngine", "slice", "-j", def_dir + "fdmprinter.def.json", "-j", def_dir + config + CONFIG_SUFFIX, "-l",  model_file]
+	for definition in definition_files:
+		cmd.append("-j")
+		cmd.append(definition)
 
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 	output = process.communicate()[0]
@@ -222,8 +224,8 @@ def slicer(model_file, config="prusa_i3"):
 	return output
 
 
-def estimate(model_file, config="prusa_i3"):
-	gcode = slicer(model_file, config)
+def estimate(model_file, definition_files):
+	gcode = slicer(model_file, definition_files)
 
 	analyzer = Analyzer(gcode, extruder_acceleration=10000, z_acceleration=100)
 
