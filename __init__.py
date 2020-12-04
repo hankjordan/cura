@@ -220,6 +220,7 @@ def slicer(model_file, definition_files, verbose=False):
 	
 	if verbose:
 		stderr_out=None
+		cmd.append("-v")
 	
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=stderr_out)
 	output = process.communicate()[0]
