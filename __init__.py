@@ -1,12 +1,12 @@
 import os
 import subprocess
 import sys
-
-CONFIG_SUFFIX = ".def.json"
-
 import math
 import datetime
 import re
+
+
+CONFIG_SUFFIX = ".def.json"
 
 
 class GCode(object):
@@ -209,14 +209,19 @@ class Analyzer(object):
 				self.__pos["Z"] = 0.0
 
 
-def slicer(model_file, definition_files):
+def slicer(model_file, definition_files, verbose=False):
 	cmd = ["CuraEngine", "slice", "-l",  model_file]
 
 	for definition in definition_files:
 		cmd.append("-j")
 		cmd.append(definition)
 
-	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+	stderr_out = subprocess.DEVNULL
+	
+	if verbose:
+		stderr_out=None
+	
+	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=stderr_out)
 	output = process.communicate()[0]
 
 	process.wait()
@@ -224,7 +229,7 @@ def slicer(model_file, definition_files):
 	return output
 
 
-def estimate(model_file, definition_files):
+def estimate(model_file, definition_files, verbose=False):
 	gcode = slicer(model_file, definition_files)
 
 	analyzer = Analyzer(gcode, extruder_acceleration=10000, z_acceleration=100)
