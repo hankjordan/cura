@@ -230,7 +230,7 @@ def slicer(model_file, definition_files, verbose=False):
 
 
 def estimate(model_file, definition_files, verbose=False):
-	gcode = slicer(model_file, definition_files)
+	gcode = slicer(model_file, definition_files, verbose)
 
 	analyzer = Analyzer(gcode, extruder_acceleration=10000, z_acceleration=100)
 
