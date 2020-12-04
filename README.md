@@ -1,5 +1,6 @@
 # Cura
-Simple python CuraEngine wrapper.
+Simple python CuraEngine wrapper. You must have curaengine in your path to use this library.
+You also need to download the cura definitions from their repo to use the slicer.
 
 ## Usage
 
