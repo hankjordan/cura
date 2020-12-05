@@ -8,7 +8,7 @@ import re
 
 def __slice(model_file, definition_files, settings=None):
 	if settings is None:
-		settings = []
+		settings = {}
 
 	cmd = ["CuraEngine", "slice"]
 
@@ -16,9 +16,9 @@ def __slice(model_file, definition_files, settings=None):
 		cmd.append("-j")
 		cmd.append(definition)
 
-	for setting in settings:
+	for key, val in settings.items():
 		cmd.append("-s")
-		cmd.append(setting)
+		cmd.append(str(key)+"="+str(val))
 
 	cmd.append("-l")
 	cmd.append(model_file)
@@ -61,7 +61,8 @@ def estimate(model_file, definition_files, settings=None, verbose=False):
 		if record:
 			header.append(line)
 
-	print(header)
+	if verbose:
+		print("Header:", header)
 
 	time = -1
 	filament = -1
